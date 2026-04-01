@@ -212,7 +212,7 @@ int main()
             if ((GPIOA->IDR & (1 << 8)) == 0) // up
             {
                 
-                //checking if your holding a button or not and resetting when it reaches a certain time
+                //checking if your holding the up button or not and resetting when it reaches a certain time
                 delay(500);
                 if ((GPIOA->IDR & (1 << 8)) == 0)
                     printTextX2("..", 10, 100, RGBToWord(0x00, 0xff, 0x00), 0);
