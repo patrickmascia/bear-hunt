@@ -132,14 +132,14 @@ static void drawPlayer(uint16_t px, uint16_t py,
     putImage(px, py, 12, 16, img, hinv, vinv);
 }
 
-/* --------- Coin spawn/respawn --------- */
-static void spawnCoinAtNewPos(uint16_t *coinX, uint16_t *coinY, uint16_t px, uint16_t py)
+/* --------- flower spawn/respawn --------- */
+static void spawnflowerAtNewPos(uint16_t *flowerX, uint16_t *flowerY, uint16_t px, uint16_t py)
 {
     do
     {
-        *coinX = randRange(10, 110);
-        *coinY = randRange(16, 140);
-    } while (playerTouchesTarget(*coinX, *coinY, px, py));
+        *flowerX = randRange(10, 110);
+        *flowerY = randRange(16, 140);
+    } while (playerTouchesTarget(*flowerX, *flowerY, px, py));
 }
 
 int main()
@@ -153,14 +153,14 @@ int main()
     uint16_t x = 50, y = 50;
     uint16_t oldx = x, oldy = y;
 
-    uint16_t coinX = 20, coinY = 80;
+    uint16_t flowerX = 20, flowerY = 80;
 
     int score = 0;
     int bigSprite = 0;
 
-    // coin visibility state machine
-    int coinVisible = 1;
-    uint32_t coinStateStart = 0;
+    // flower visibility state machine
+    int flowerVisible = 1;
+    uint32_t flowerStateStart = 0;
 
     // level 3 challenge
     int inLevel3Challenge = 0;
@@ -173,15 +173,15 @@ int main()
 
     rng_state ^= (milliseconds + 0x12345678);
 
-    spawnCoinAtNewPos(&coinX, &coinY, x, y);
+    spawnflowerAtNewPos(&flowerX, &flowerY, x, y);
 
     // initial draw
-    putImage(coinX, coinY, 12, 16, flower, 0, 0);
+    putImage(flowerX, flowerY, 12, 16, flower, 0, 0);
     drawPlayer(x, y, bear_front_1, 0, 0, bigSprite);
     drawHUD(score);
 
-    coinVisible = 1;
-    coinStateStart = milliseconds;
+    flowerVisible = 1;
+    flowerStateStart = milliseconds;
 
     
     while (1)
@@ -244,14 +244,14 @@ int main()
                     x = 50, y = 50;
                     oldx = x, oldy = y;
                     
-                    coinX = 20, coinY = 80;
+                    flowerX = 20, flowerY = 80;
                     
                     score = 0;
                     bigSprite = 0;
                     
-                    // coin visibility state machine
-                    coinVisible = 1;
-                    coinStateStart = 0;
+                    // flower visibility state machine
+                    flowerVisible = 1;
+                    flowerStateStart = 0;
                     
                     // level 3 challenge
                     inLevel3Challenge = 0;
@@ -269,7 +269,7 @@ int main()
 
             int level = calcLevel(score);
 
-            // set coin speed by level (disappear faster each level)
+            // set flower speed by level (disappear faster each level)
             // Level 1: slower, Level 2: faster, Level 3: super quick
             uint32_t visibleMs, hiddenMs;
             if (level == 1)
@@ -299,7 +299,7 @@ int main()
                 drawTimerSeconds(30);
             }
 
-            // LEVEL 3: timer + win/lose condition (need +10 coins in 30 seconds)
+            // LEVEL 3: timer + win/lose condition (need +10 flowers in 30 seconds)
             if (inLevel3Challenge)
             {
                 uint32_t elapsed = milliseconds - level3StartMs;
@@ -308,7 +308,7 @@ int main()
                 // update timer display (cheap + simple)
                 drawTimerSeconds(secondsLeft);
 
-                // win early if got 10 coins during level 3
+                // win early if got 10 flowers during level 3
                 if ((score - level3StartScore) >= 10)
                 {
                     fillRectangle(0, 16, 128, 160, 0);
@@ -325,28 +325,28 @@ int main()
                 }
             }
 
-            // coin appear/disappear state machine (runs even if player doesn't move)
+            // flower appear/disappear state machine (runs even if player doesn't move)
             uint32_t now = milliseconds;
-            if (coinVisible)
+            if (flowerVisible)
             {
-                if ((now - coinStateStart) >= visibleMs)
+                if ((now - flowerStateStart) >= visibleMs)
                 {
-                    // hide coin
-                    fillRectangle(coinX, coinY, 12, 16, 0);
-                    coinVisible = 0;
-                    coinStateStart = now;
+                    // hide flower
+                    fillRectangle(flowerX, flowerY, 12, 16, 0);
+                    flowerVisible = 0;
+                    flowerStateStart = now;
                 }
             }
             else
             {
-                if ((now - coinStateStart) >= hiddenMs)
+                if ((now - flowerStateStart) >= hiddenMs)
                 {
-                    // show coin at a new random position
-                    spawnCoinAtNewPos(&coinX, &coinY, x, y);
-                    putImage(coinX, coinY, 12, 16, flower, 0, 0);
+                    // show flower at a new random position
+                    spawnflowerAtNewPos(&flowerX, &flowerY, x, y);
+                    putImage(flowerX, flowerY, 12, 16, flower, 0, 0);
                     drawHUD(score);
-                    coinVisible = 1;
-                    coinStateStart = now;
+                    flowerVisible = 1;
+                    flowerStateStart = now;
                 }
             }
 
@@ -420,8 +420,8 @@ int main()
                     toggle ^= 1;
                 }
 
-                // collect coin only if it's visible
-                if (coinVisible && playerTouchesTarget(coinX, coinY, x, y))
+                // collect flower only if it's visible
+                if (flowerVisible && playerTouchesTarget(flowerX, flowerY, x, y))
                 {
                     // collect
                     score++;
@@ -431,14 +431,14 @@ int main()
                     if ((score % 10) == 0)
                         speed += 4;
 
-                    // after 10 coins total: big sprite effect
+                    // after 10 flowers total: big sprite effect
                     if (score >= 10)
                         bigSprite = 1;
 
                     // immediately hide & respawn cycle
-                    fillRectangle(coinX, coinY, 12, 16, 0);
-                    coinVisible = 0;
-                    coinStateStart = milliseconds;
+                    fillRectangle(flowerX, flowerY, 12, 16, 0);
+                    flowerVisible = 0;
+                    flowerStateStart = milliseconds;
                 }
             }
 
