@@ -10,6 +10,10 @@ void playNote(uint32_t Freq)
 	TIM14->CNT = 0; // set the count to zero initially
 	TIM14->CR1 |= (1 << 0); // and enable the counter
 }
+void stopNote(void)
+{
+    TIM14->CR1 &= ~(1 << 0);
+}
 void initSound()
 {
 	// Power up the timer module
