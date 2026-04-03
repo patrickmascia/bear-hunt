@@ -21,28 +21,21 @@ typedef struct
 
 // 0 = silence/rest
 static const SongNote menuSong[] = {
-    // Part A - cozy intro
     {E5, 200}, {0, 40},
     {G5, 200}, {0, 40},
     {A5, 240}, {0, 60},
     {G5, 200}, {0, 40},
     {E5, 240}, {0, 80},
-
-    // small variation
     {D5, 200}, {0, 40},
     {F5, 200}, {0, 40},
     {G5, 240}, {0, 60},
     {F5, 200}, {0, 40},
     {D5, 240}, {0, 80},
-
-    // repeat motif slightly higher feel
     {E5, 200}, {0, 40},
     {G5, 200}, {0, 40},
     {B5, 260}, {0, 60},
     {A5, 200}, {0, 40},
     {G5, 260}, {0, 80},
-
-    // simple ending that loops nicely
     {E5, 200}, {0, 40},
     {D5, 200}, {0, 40},
     {E5, 240}, {0, 60},
