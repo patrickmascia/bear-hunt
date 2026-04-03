@@ -281,6 +281,7 @@ int main()
                 songIndex = 0;
                 noteStartTime = milliseconds;
 
+                // start plaiyng the song upon entering menu
                 if (menuSong[0].note == 0)
                     stopNote();
                 else
@@ -289,6 +290,8 @@ int main()
              if ((GPIOA->IDR & (1 << 8)) == 0){
                 fillRectangle(0, 16, 128, 160, 0);
                 drawHUD(score);
+
+                // stop playing the song once you exit menu
                 stopNote();
                 songPlaying = 0;
                 newGame = 0;
