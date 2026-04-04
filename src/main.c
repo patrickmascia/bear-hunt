@@ -132,7 +132,7 @@ static void drawHUD(int score)
 
     // clear HUD areas
     fillRectangle(0, 0, 70, 16, 0);  // score area
-    fillRectangle(92, 0, 36, 16, 0); // level area (assumes ~128px wide)
+    fillRectangle(92, 0, 36, 16, 0); // level area
 
     printTextX2(bufS, 2, 2, RGBToWord(0xff, 0xff, 0xff), 0);
     printTextX2(bufL, 92, 2, RGBToWord(0xff, 0xff, 0xff), 0);
